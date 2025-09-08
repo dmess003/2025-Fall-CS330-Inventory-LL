@@ -1,5 +1,7 @@
 package items;
 
+import java.util.Iterator;
+
 import containers.LinkedList;
 
 
@@ -100,6 +102,11 @@ public class Inventory
     public boolean isFull()
     {
         // Replace the next line
+        if(this.totalSlots() == this.utilizedSlots())
+        {
+            return true;
+        }
+
         return false;
     }
 
@@ -124,6 +131,17 @@ public class Inventory
     public ItemStack findMatchingItemStack(ItemStack key)
     {
         // Add the necessary sequential search loop
+        LinkedList.Node<ItemStack> current = this.slots.head;
+
+        while(current != null)
+        {
+            if(current.data.equals(key))
+            {
+                return current.data;
+            }
+
+            current = current.next;
+        }
 
         return null;
     }
@@ -139,6 +157,19 @@ public class Inventory
 
         // Use the appendNode/add logic from Review 1 as your starting point
         // Once we reach this function... we know that `toAdd` must be stored
+
+        if(this.slots.head == null)
+        {
+            this.slots.head = newNode;
+            this.slots.tail = newNode;
+        }
+        else
+        {
+            this.slots.tail.next = newNode;
+            this.slots.tail = newNode;
+        }
+
+        ++this.slots.currentSize;
     }
 
     /**
